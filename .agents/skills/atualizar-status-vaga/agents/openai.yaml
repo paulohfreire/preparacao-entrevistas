@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atualizar status da vaga"
+  short_description: "Registre etapas e acompanhe candidaturas"
+  default_prompt: "Use $atualizar-status-vaga para registrar esta etapa e atualizar o andamento da candidatura."
