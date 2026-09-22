@@ -11,7 +11,7 @@ Crie documentos direcionados a uma vaga sem alterar a historia profissional do c
 
 - Localize a pasta da candidatura em `candidaturas/<empresa>-<cargo>/`.
 - Leia `vaga.md`, `match.md` e `perfil/curriculo-base.md` por inteiro.
-- Consulte tambem `C:\Users\paulo\Desktop\CV-Paulo-2026.pdf` como referencia curricular atual e somente leitura.
+- Consulte tambem `perfil/curriculo-referencia.pdf`, quando existir, como referencia curricular atual e somente leitura.
 - Consulte `perfil/inventario-de-experiencias.md` quando existir.
 - Se `match.md` estiver ausente, encaminhe a analise ao especialista de vagas ou invoque `$analisar-match-vaga` quando estiver autorizado a executar as duas etapas.
 - Se faltar evidencia necessaria, apresente perguntas objetivas e aguarde antes de afirmar o fato.

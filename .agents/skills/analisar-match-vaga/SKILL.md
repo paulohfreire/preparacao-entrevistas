@@ -11,7 +11,7 @@ Produza uma analise rastreavel entre a vaga e evidencias reais do perfil profiss
 
 - Obtenha a descricao integral da vaga, por texto, URL ou arquivo.
 - Leia `perfil/curriculo-base.md` como fonte canonica.
-- Consulte tambem `C:\Users\paulo\Desktop\CV-Paulo-2026.pdf` como referencia curricular atual e somente leitura.
+- Consulte tambem `perfil/curriculo-referencia.pdf`, quando existir, como referencia curricular atual e somente leitura.
 - Consulte `perfil/inventario-de-experiencias.md` e `perfil/preferencias-de-vagas.md` quando existirem.
 - Se faltar a vaga ou o curriculo-base, indique exatamente o insumo ausente e aguarde; nao estime o perfil.
 
