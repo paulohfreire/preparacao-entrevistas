@@ -1,0 +1,6 @@
+# Dados pessoais e materiais de candidaturas permanecem somente no ambiente local.
+perfil/*
+!perfil/.gitkeep
+
+candidaturas/*
+!candidaturas/.gitkeep

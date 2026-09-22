@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adaptar candidatura"
+  short_description: "Personalize curriculo e carta para uma vaga"
+  default_prompt: "Adapte meu curriculo e minha carta para esta candidatura."
