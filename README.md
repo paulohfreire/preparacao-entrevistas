@@ -25,7 +25,8 @@ Subagentes podem apoiar tarefas pontuais e paralelizáveis, mas não substituem 
 4. Se a candidatura for priorizada, a skill `adaptar-candidatura` usa a vaga, a análise e o currículo-base para produzir:
    - `curriculo/curriculo.md`;
    - `carta/carta.md`.
-5. A preparação técnica pode usar os requisitos comprovados da vaga para orientar estudos e simulações de entrevista.
+5. Durante o processo seletivo, a skill `atualizar-status-vaga` registra entrevistas, desafios, feedbacks e mudanças de status em `processo-seletivo.md`, além de manter o painel `candidaturas/status.md`.
+6. A preparação técnica pode usar os requisitos comprovados da vaga e os aprendizados das etapas anteriores para orientar estudos e simulações de entrevista.
 
 A análise de compatibilidade deve sempre ocorrer antes da adaptação dos documentos.
 
@@ -36,8 +37,9 @@ A análise de compatibilidade deve sempre ocorrer antes da adaptação dos docum
 |-- .agents/
 |   `-- skills/
 |       |-- analisar-match-vaga/
-|       `-- adaptar-candidatura/
-|-- candidaturas/               # conteúdo local, ignorado pelo Git
+|       |-- adaptar-candidatura/
+|       `-- atualizar-status-vaga/
+|-- candidaturas/               # conteúdo e painel locais, ignorados pelo Git
 |-- perfil/                      # dados profissionais locais, ignorados pelo Git
 |-- CONTEXT.md                   # vocabulário e limites do domínio
 |-- .gitignore
@@ -51,6 +53,7 @@ Cada candidatura segue esta organização:
 candidaturas/<empresa>-<cargo>/
 |-- vaga.md
 |-- match.md
+|-- processo-seletivo.md
 |-- curriculo/
 |   `-- curriculo.md
 `-- carta/
@@ -89,3 +92,7 @@ Classifica os requisitos da vaga, associa evidências do perfil, estima a compat
 ### `adaptar-candidatura`
 
 Produz um currículo e uma carta de apresentação direcionados depois que a compatibilidade é analisada. Pode reorganizar e aprimorar a redação das evidências, mas não ampliar o que realmente aconteceu.
+
+### `atualizar-status-vaga`
+
+Registra etapas agendadas e concluídas, feedbacks, próximas ações e mudanças no processo seletivo. Mantém o histórico detalhado da candidatura e um painel consolidado, propõe uma avaliação de 1 a 5 para etapas avaliativas e solicita confirmação antes de registrá-la. Não altera `vaga.md`, não realiza a análise inicial de compatibilidade e não cria lembretes sem autorização explícita.
