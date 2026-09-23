@@ -25,7 +25,8 @@ Subagents may support focused tasks that can run in parallel, but they do not re
 4. If the application is prioritized, the `adaptar-candidatura` skill uses the job description, assessment, and base résumé to produce:
    - `curriculo/curriculo.md`;
    - `carta/carta.md`.
-5. Technical preparation can use the job's verified requirements to guide study sessions and mock interviews.
+5. During the selection process, the `atualizar-status-vaga` skill records interviews, challenges, feedback, and status changes in `processo-seletivo.md`, while also maintaining the `candidaturas/status.md` dashboard.
+6. Technical preparation can use the job's verified requirements and lessons from previous stages to guide study sessions and mock interviews.
 
 The compatibility assessment must always take place before the documents are tailored.
 
@@ -36,8 +37,9 @@ The compatibility assessment must always take place before the documents are tai
 |-- .agents/
 |   `-- skills/
 |       |-- analisar-match-vaga/
-|       `-- adaptar-candidatura/
-|-- candidaturas/               # local content, ignored by Git
+|       |-- adaptar-candidatura/
+|       `-- atualizar-status-vaga/
+|-- candidaturas/               # local content and dashboard, ignored by Git
 |-- perfil/                      # local professional data, ignored by Git
 |-- CONTEXT.md                   # domain vocabulary and boundaries
 |-- .gitignore
@@ -51,6 +53,7 @@ Each application follows this structure:
 candidaturas/<company>-<role>/
 |-- vaga.md
 |-- match.md
+|-- processo-seletivo.md
 |-- curriculo/
 |   `-- curriculo.md
 `-- carta/
@@ -89,3 +92,7 @@ Classifies job requirements, maps them to evidence from the professional profile
 ### `adaptar-candidatura`
 
 Produces a tailored résumé and cover letter after compatibility has been assessed. It may reorganize and improve the wording of the evidence, but it must not exaggerate what actually happened.
+
+### `atualizar-status-vaga`
+
+Records scheduled and completed stages, feedback, next actions, and selection-process status changes. It maintains both the application's detailed history and a consolidated dashboard, proposes a 1-to-5 assessment for evaluative stages, and requests confirmation before recording it. It does not modify `vaga.md`, perform the initial compatibility assessment, or create reminders without explicit authorization.
