@@ -1,5 +1,5 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
-import { join, dirname, relative } from 'node:path';
+import { join, dirname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
@@ -7,6 +7,9 @@ const candidaturasDir = join(root, 'candidaturas');
 const outputPath = join(candidaturasDir, 'status.json');
 const statuses = new Set(['planejada', 'em andamento', 'oferta recebida', 'aprovada', 'rejeitada', 'desistência', 'encerrada sem retorno']);
 const situations = new Set(['agendada', 'concluída', 'cancelada']);
+const coverages = new Set(['limitada', 'completa']);
+const targets = new Set(['provável', 'confirmado']);
+const modes = new Set(['rápido', 'padrão', 'aprofundado']);
 
 const value = (text, label) => {
   const match = text.match(new RegExp(`^(?:-\\s*)?\\*\\*${label}:\\*\\*\\s*(.+)$`, 'm'));
@@ -35,18 +38,55 @@ function parseStages(text) {
   });
 }
 
-async function processFiles() {
-  const entries = await readdir(candidaturasDir, { withFileTypes: true });
-  const folders = entries.filter((entry) => entry.isDirectory());
+async function findLatestPreparation(folderPath, rootPath) {
+  const preparationDir = join(folderPath, 'preparacao');
+  let entries;
+  try {
+    entries = await readdir(preparationDir, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+
+  const preparations = [];
+  for (const entry of entries.filter((item) => item.isFile() && item.name.endsWith('.md'))) {
+    const path = join(preparationDir, entry.name);
+    const text = await readFile(path, 'utf8');
+    const preparation = {
+      titulo: text.match(/^# Preparação de etapa — (.+)$/m)?.[1]?.trim() || null,
+      cobertura: value(text, 'Cobertura'),
+      alvo: value(text, 'Alvo'),
+      modo: value(text, 'Modo'),
+      dataEtapa: value(text, 'Data da etapa'),
+      ultimaAtualizacao: value(text, 'Última atualização'),
+      arquivo: relative(rootPath, path).replaceAll('\\', '/')
+    };
+
+    if (!preparation.titulo || !coverages.has(preparation.cobertura) || !targets.has(preparation.alvo) || !modes.has(preparation.modo) || !preparation.ultimaAtualizacao) {
+      throw new Error(`Preparação inválida em ${relative(rootPath, path)}`);
+    }
+    preparations.push(preparation);
+  }
+
+  preparations.sort((a, b) => b.ultimaAtualizacao.localeCompare(a.ultimaAtualizacao) || b.arquivo.localeCompare(a.arquivo));
+  return preparations[0] || null;
+}
+
+export async function buildDashboardData({ candidaturasPath = candidaturasDir, rootPath = root } = {}) {
+  const entries = await readdir(candidaturasPath, { withFileTypes: true });
   const records = [];
-  for (const folder of folders) {
-    const processPath = join(candidaturasDir, folder.name, 'processo-seletivo.md');
+
+  for (const folder of entries.filter((entry) => entry.isDirectory())) {
+    const folderPath = join(candidaturasPath, folder.name);
+    const processPath = join(folderPath, 'processo-seletivo.md');
     let text;
     try {
       text = await readFile(processPath, 'utf8');
-    } catch {
-      continue;
+    } catch (error) {
+      if (error.code === 'ENOENT') continue;
+      throw error;
     }
+
     const record = {
       empresa: value(text, 'Empresa'),
       cargo: text.match(/^# Processo seletivo — (.+)$/m)?.[1]?.trim() || folder.name,
@@ -56,24 +96,32 @@ async function processFiles() {
       prazo: value(text, 'Prazo'),
       ultimaAtualizacao: value(text, 'Última atualização'),
       pasta: folder.name,
-      etapas: parseStages(text)
+      etapas: parseStages(text),
+      preparacao: await findLatestPreparation(folderPath, rootPath)
     };
     if (!record.empresa || !record.etapa || !record.ultimaAtualizacao || !statuses.has(record.status)) {
-      throw new Error(`Resumo inválido em ${relative(root, processPath)}`);
+      throw new Error(`Resumo inválido em ${relative(rootPath, processPath)}`);
     }
     records.push(record);
   }
+
   records.sort((a, b) => {
     const active = (status) => ['planejada', 'em andamento', 'oferta recebida'].includes(status) ? 0 : 1;
     return active(a.status) - active(b.status) || b.ultimaAtualizacao.localeCompare(a.ultimaAtualizacao) || a.empresa.localeCompare(b.empresa);
   });
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     atualizadoEm: records.map((record) => record.ultimaAtualizacao).sort().at(-1) || null,
     candidaturas: records
   };
 }
 
-const data = await processFiles();
-await writeFile(outputPath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-console.log(`Dashboard atualizado: ${relative(root, outputPath)} (${data.candidaturas.length} candidaturas)`);
+export async function generateDashboardData({ candidaturasPath = candidaturasDir, rootPath = root, destination = outputPath } = {}) {
+  const data = await buildDashboardData({ candidaturasPath, rootPath });
+  await writeFile(destination, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  console.log(`Dashboard atualizado: ${relative(rootPath, destination)} (${data.candidaturas.length} candidaturas)`);
+  return data;
+}
+
+const isMain = process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url));
+if (isMain) await generateDashboardData();

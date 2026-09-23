@@ -25,8 +25,9 @@ Subagents may support focused tasks that can run in parallel, but they do not re
 4. If the application is prioritized, the `adaptar-candidatura` skill uses the job description, assessment, and base résumé to produce:
    - `curriculo/curriculo.md`;
    - `carta/carta.md`.
-5. During the selection process, the `atualizar-status-vaga` skill records interviews, challenges, feedback, and status changes in `processo-seletivo.md`, while also maintaining the `candidaturas/status.md` and `candidaturas/status.json` dashboards.
-6. Technical preparation can use the job's verified requirements and lessons from previous stages to guide study sessions and mock interviews.
+5. Before a stage, the `preparar-etapa` skill combines requirements, evidence, and lessons from previous stages into a targeted plan and can also run mock interviews.
+6. During the selection process, the `atualizar-status-vaga` skill records interviews, challenges, feedback, and status changes in `processo-seletivo.md`, while also maintaining the `candidaturas/status.md` and `candidaturas/status.json` dashboards.
+7. Preparation for the next stage can incorporate recorded feedback, creating a continuous practice and improvement loop.
 
 The compatibility assessment must always take place before the documents are tailored.
 
@@ -38,7 +39,8 @@ The compatibility assessment must always take place before the documents are tai
 |   `-- skills/
 |       |-- analisar-match-vaga/
 |       |-- adaptar-candidatura/
-|       `-- atualizar-status-vaga/
+|       |-- atualizar-status-vaga/
+|       `-- preparar-etapa/
 |-- candidaturas/               # local content and dashboards, ignored by Git
 |-- dashboard/                  # local visual tracking front end
 |-- scripts/dashboard/          # front-end data generation and validation
@@ -57,7 +59,7 @@ To show the visual application tracker, run this command from the repository roo
 npm run dashboard
 ```
 
-The command regenerates data from the process histories, starts the local front end, and opens the browser. The dashboard provides summary cards, filters, a table, and a timeline. Markdown files remain the source of truth; `candidaturas/status.json` is a projection for the front end.
+The command regenerates data from the process histories, starts the local front end, and opens the browser. The dashboard provides summary cards, filters, a table, a timeline, and each application's preparation indicator. Available preparations open in a local reading page. Markdown files remain the source of truth; `candidaturas/status.json` is a projection for the front end.
 
 Each application follows this structure:
 
@@ -66,6 +68,8 @@ candidaturas/<company>-<role>/
 |-- vaga.md
 |-- match.md
 |-- processo-seletivo.md
+|-- preparacao/
+|   `-- <date>-<category>.md
 |-- curriculo/
 |   `-- curriculo.md
 `-- carta/
@@ -108,3 +112,7 @@ Produces a tailored résumé and cover letter after compatibility has been asses
 ### `atualizar-status-vaga`
 
 Records scheduled and completed stages, feedback, next actions, and selection-process status changes. It maintains the application's detailed history and Markdown/JSON dashboards, proposes a 1-to-5 assessment for evaluative stages, and requests confirmation before recording it. It does not modify `vaga.md`, perform the initial compatibility assessment, or create reminders without explicit authorization.
+
+### `preparar-etapa`
+
+Creates persistent, stage-specific preparation by mapping job requirements to verified evidence from the professional profile. It offers quick, standard, and in-depth modes, can run mock interviews, and records assessments by dimension. It reads the process history but leaves status changes to `atualizar-status-vaga`.

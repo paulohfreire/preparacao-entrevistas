@@ -110,7 +110,7 @@ Quando um valor resumido mudar, atualize o histórico detalhado e a linha do pai
 
 Quando existir `candidaturas/status.json`, ele é uma projeção gerada para o componente visual. Os Markdown continuam sendo as fontes de verdade: `processo-seletivo.md` contém o histórico detalhado e `status.md` contém o resumo humano consolidado.
 
-O JSON deve conter `schemaVersion`, `atualizadoEm` e `candidaturas`. Cada candidatura pode conter `empresa`, `cargo`, `status`, `etapa`, `proximaAcao`, `prazo`, `ultimaAtualizacao`, `pasta` e, quando o gerador estiver implementado, `etapas`. A projeção deve preservar datas desconhecidas e prazos indefinidos como `null` ou o marcador definido pelo gerador, sem estimá-los.
+O JSON deve conter `schemaVersion`, `atualizadoEm` e `candidaturas`. Cada candidatura pode conter `empresa`, `cargo`, `status`, `etapa`, `proximaAcao`, `prazo`, `ultimaAtualizacao`, `pasta`, `etapas` e `preparacao`. Quando existir, `preparacao` é derivada do artefato mais recente e contém `titulo`, `cobertura`, `alvo`, `modo`, `dataEtapa`, `ultimaAtualizacao` e `arquivo`; quando não existir, seu valor é `null`. A projeção deve preservar datas desconhecidas e prazos indefinidos como `null` ou o marcador definido pelo gerador, sem estimá-los.
 
 A ordenação das candidaturas deve seguir o painel: estados ativos primeiro e, dentro de cada grupo, atualização mais recente primeiro. As etapas devem permanecer em ordem cronológica. Valores controlados inválidos, candidatura ausente no histórico, divergência não resolvida entre os Markdown ou campos inventados devem interromper a geração com uma mensagem acionável.
 
