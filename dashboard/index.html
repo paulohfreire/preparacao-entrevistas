@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acompanhamento de candidaturas</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Preparação para entrevistas</p>
+          <h1>Acompanhamento de candidaturas</h1>
+          <p class="muted">Uma visão rápida do processo seletivo e das próximas ações.</p>
+        </div>
+        <button id="refresh" class="button">Atualizar dados</button>
+      </header>
+
+      <section id="cards" class="cards" aria-label="Resumo"></section>
+
+      <section class="toolbar" aria-label="Filtros">
+        <label>Buscar<input id="search" type="search" placeholder="Empresa ou cargo" /></label>
+        <label>Status<select id="status"><option value="">Todos</option></select></label>
+        <label>Etapa<select id="stage"><option value="">Todas</option></select></label>
+        <button id="clear" class="button button-light">Limpar filtros</button>
+      </section>
+
+      <section class="workspace">
+        <div class="table-card">
+          <div class="section-heading"><h2>Processos</h2><span id="count" class="muted"></span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Empresa</th><th>Cargo</th><th>Status</th><th>Etapa atual</th><th>Próxima ação</th><th>Atualização</th></tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+        </div>
+        <aside id="details" class="details empty"><p>Selecione uma candidatura para ver a linha do tempo.</p></aside>
+      </section>
+      <p id="updated" class="footer muted"></p>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

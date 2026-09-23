@@ -1,0 +1,10 @@
+{
+  "name": "preparacao-entrevistas-dashboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dashboard:data": "node scripts/dashboard/build-data.mjs",
+    "dashboard": "node scripts/dashboard/server.mjs",
+    "dashboard:check": "node --test tests/dashboard/*.test.mjs"
+  }
+}
