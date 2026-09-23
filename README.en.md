@@ -25,7 +25,7 @@ Subagents may support focused tasks that can run in parallel, but they do not re
 4. If the application is prioritized, the `adaptar-candidatura` skill uses the job description, assessment, and base résumé to produce:
    - `curriculo/curriculo.md`;
    - `carta/carta.md`.
-5. During the selection process, the `atualizar-status-vaga` skill records interviews, challenges, feedback, and status changes in `processo-seletivo.md`, while also maintaining the `candidaturas/status.md` dashboard.
+5. During the selection process, the `atualizar-status-vaga` skill records interviews, challenges, feedback, and status changes in `processo-seletivo.md`, while also maintaining the `candidaturas/status.md` and `candidaturas/status.json` dashboards.
 6. Technical preparation can use the job's verified requirements and lessons from previous stages to guide study sessions and mock interviews.
 
 The compatibility assessment must always take place before the documents are tailored.
@@ -39,13 +39,25 @@ The compatibility assessment must always take place before the documents are tai
 |       |-- analisar-match-vaga/
 |       |-- adaptar-candidatura/
 |       `-- atualizar-status-vaga/
-|-- candidaturas/               # local content and dashboard, ignored by Git
+|-- candidaturas/               # local content and dashboards, ignored by Git
+|-- dashboard/                  # local visual tracking front end
+|-- scripts/dashboard/          # front-end data generation and validation
 |-- perfil/                      # local professional data, ignored by Git
 |-- CONTEXT.md                   # domain vocabulary and boundaries
 |-- .gitignore
 |-- README.en.md
 `-- README.md
 ```
+
+## Local dashboard
+
+To show the visual application tracker, run this command from the repository root:
+
+```powershell
+npm run dashboard
+```
+
+The command regenerates data from the process histories, starts the local front end, and opens the browser. The dashboard provides summary cards, filters, a table, and a timeline. Markdown files remain the source of truth; `candidaturas/status.json` is a projection for the front end.
 
 Each application follows this structure:
 
@@ -95,4 +107,4 @@ Produces a tailored résumé and cover letter after compatibility has been asses
 
 ### `atualizar-status-vaga`
 
-Records scheduled and completed stages, feedback, next actions, and selection-process status changes. It maintains both the application's detailed history and a consolidated dashboard, proposes a 1-to-5 assessment for evaluative stages, and requests confirmation before recording it. It does not modify `vaga.md`, perform the initial compatibility assessment, or create reminders without explicit authorization.
+Records scheduled and completed stages, feedback, next actions, and selection-process status changes. It maintains the application's detailed history and Markdown/JSON dashboards, proposes a 1-to-5 assessment for evaluative stages, and requests confirmation before recording it. It does not modify `vaga.md`, perform the initial compatibility assessment, or create reminders without explicit authorization.

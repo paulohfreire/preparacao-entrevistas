@@ -4,3 +4,6 @@ perfil/*
 
 candidaturas/*
 !candidaturas/.gitkeep
+
+node_modules/
+dashboard/dist/

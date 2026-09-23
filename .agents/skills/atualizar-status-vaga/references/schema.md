@@ -105,3 +105,13 @@ O cabeçalho e os seis campos iniciais de cada etapa formam o núcleo. Inclua su
 Mantenha exatamente uma linha por candidatura. Use o nome da empresa e da vaga registrados no histórico detalhado. Posicione primeiro estados ativos, depois encerrados; dentro de cada grupo, ordene pela data de atualização decrescente.
 
 Quando um valor resumido mudar, atualize o histórico detalhado e a linha do painel juntos. Se um dos arquivos estiver inconsistente, trate `processo-seletivo.md` como fonte do detalhe e confirme fatos ambíguos com o usuário antes de reconciliar.
+
+## Projeção estruturada para o dashboard
+
+Quando existir `candidaturas/status.json`, ele é uma projeção gerada para o componente visual. Os Markdown continuam sendo as fontes de verdade: `processo-seletivo.md` contém o histórico detalhado e `status.md` contém o resumo humano consolidado.
+
+O JSON deve conter `schemaVersion`, `atualizadoEm` e `candidaturas`. Cada candidatura pode conter `empresa`, `cargo`, `status`, `etapa`, `proximaAcao`, `prazo`, `ultimaAtualizacao`, `pasta` e, quando o gerador estiver implementado, `etapas`. A projeção deve preservar datas desconhecidas e prazos indefinidos como `null` ou o marcador definido pelo gerador, sem estimá-los.
+
+A ordenação das candidaturas deve seguir o painel: estados ativos primeiro e, dentro de cada grupo, atualização mais recente primeiro. As etapas devem permanecer em ordem cronológica. Valores controlados inválidos, candidatura ausente no histórico, divergência não resolvida entre os Markdown ou campos inventados devem interromper a geração com uma mensagem acionável.
+
+Após cada atualização de processo, regenere e valide a projeção com `npm run dashboard:data` quando o comando existir. O front deve consumir o JSON e não editar os arquivos de candidatura. Até que o gerador seja implementado, qualquer manutenção manual temporária do JSON deve copiar somente valores confirmados nos Markdown e ser comunicada como limitação.

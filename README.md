@@ -25,7 +25,7 @@ Subagentes podem apoiar tarefas pontuais e paralelizáveis, mas não substituem 
 4. Se a candidatura for priorizada, a skill `adaptar-candidatura` usa a vaga, a análise e o currículo-base para produzir:
    - `curriculo/curriculo.md`;
    - `carta/carta.md`.
-5. Durante o processo seletivo, a skill `atualizar-status-vaga` registra entrevistas, desafios, feedbacks e mudanças de status em `processo-seletivo.md`, além de manter o painel `candidaturas/status.md`.
+5. Durante o processo seletivo, a skill `atualizar-status-vaga` registra entrevistas, desafios, feedbacks e mudanças de status em `processo-seletivo.md`, além de manter os painéis `candidaturas/status.md` e `candidaturas/status.json`.
 6. A preparação técnica pode usar os requisitos comprovados da vaga e os aprendizados das etapas anteriores para orientar estudos e simulações de entrevista.
 
 A análise de compatibilidade deve sempre ocorrer antes da adaptação dos documentos.
@@ -39,13 +39,25 @@ A análise de compatibilidade deve sempre ocorrer antes da adaptação dos docum
 |       |-- analisar-match-vaga/
 |       |-- adaptar-candidatura/
 |       `-- atualizar-status-vaga/
-|-- candidaturas/               # conteúdo e painel locais, ignorados pelo Git
+|-- candidaturas/               # conteúdo e painéis locais, ignorados pelo Git
+|-- dashboard/                  # front local do acompanhamento visual
+|-- scripts/dashboard/          # geração e validação dos dados do front
 |-- perfil/                      # dados profissionais locais, ignorados pelo Git
 |-- CONTEXT.md                   # vocabulário e limites do domínio
 |-- .gitignore
 |-- README.en.md
 `-- README.md
 ```
+
+## Dashboard local
+
+Para mostrar o acompanhamento visual das candidaturas, execute na raiz do projeto:
+
+```powershell
+npm run dashboard
+```
+
+O comando regenera os dados a partir dos históricos em `candidaturas/`, inicia o front local e abre o navegador. O dashboard apresenta cards de resumo, filtros, tabela e linha do tempo. Os arquivos Markdown continuam sendo a fonte de verdade; `candidaturas/status.json` é uma projeção para o front.
 
 Cada candidatura segue esta organização:
 
@@ -95,4 +107,4 @@ Produz um currículo e uma carta de apresentação direcionados depois que a com
 
 ### `atualizar-status-vaga`
 
-Registra etapas agendadas e concluídas, feedbacks, próximas ações e mudanças no processo seletivo. Mantém o histórico detalhado da candidatura e um painel consolidado, propõe uma avaliação de 1 a 5 para etapas avaliativas e solicita confirmação antes de registrá-la. Não altera `vaga.md`, não realiza a análise inicial de compatibilidade e não cria lembretes sem autorização explícita.
+Registra etapas agendadas e concluídas, feedbacks, próximas ações e mudanças no processo seletivo. Mantém o histórico detalhado da candidatura e os painéis Markdown/JSON, propõe uma avaliação de 1 a 5 para etapas avaliativas e solicita confirmação antes de registrá-la. Não altera `vaga.md`, não realiza a análise inicial de compatibilidade e não cria lembretes sem autorização explícita.

@@ -23,7 +23,7 @@ Normalize novas pastas em letras minúsculas ASCII separadas por hífens. Preser
 
 ## Preparar a atualização
 
-Antes de escrever, leia [references/schema.md](references/schema.md) por inteiro e leia os arquivos atuais da candidatura e `candidaturas/status.md`, quando existirem.
+Antes de escrever, leia [references/schema.md](references/schema.md) por inteiro e leia os arquivos atuais da candidatura e `candidaturas/status.md`, quando existirem. Quando `candidaturas/status.json` existir, leia-o também para verificar a projeção estruturada usada pelo dashboard. Trate-o como saída derivada dos registros Markdown, não como fonte independente de fatos.
 
 Extraia do relato somente fatos fornecidos. Toda etapa precisa de categoria, nome, situação, data quando conhecida, resumo factual e próxima ação quando existente. Registre participantes, formato, perguntas, respostas, feedback, percepção pessoal, aprendizados e prazos apenas quando forem aplicáveis.
 
@@ -63,10 +63,12 @@ Atualize na mesma operação:
 - `candidaturas/<empresa>-<cargo>/processo-seletivo.md`, fonte detalhada do andamento;
 - `candidaturas/status.md`, painel resumido de todas as candidaturas.
 
+Se `candidaturas/status.json` existir, regenere a projeção estruturada após atualizar os Markdown. Use `npm run dashboard:data` quando esse comando estiver disponível. Se o gerador ainda não existir, mantenha o JSON alinhado aos campos resumidos confirmados nos Markdown e comunique essa limitação ao usuário.
+
 Preserve contribuições manuais. Em uma correção, edite a entrada correspondente, atualize sua data de revisão e registre um resumo curto do que mudou. Ordene as etapas da mais antiga para a mais recente. No painel, mostre primeiro candidaturas ativas e ordene cada grupo pela atualização mais recente.
 
 ## Concluir
 
-Confirme que o histórico e o painel apresentam o mesmo status, etapa atual, próxima ação e data de atualização; que todos os valores controlados pertencem ao esquema; e que nenhuma informação foi adicionada a `vaga.md`.
+Confirme que o histórico e o painel apresentam o mesmo status, etapa atual, próxima ação e data de atualização; que todos os valores controlados pertencem ao esquema; e que nenhuma informação foi adicionada a `vaga.md`. Quando o dashboard estiver configurado, confirme também que `status.json` foi regenerado/validado e contém a candidatura atualizada.
 
 Resuma ao usuário os arquivos e campos alterados. Quando houver uma próxima ação com data, sugira criar um lembrete, mas solicite autorização explícita antes de criar qualquer automação.
