@@ -7,6 +7,15 @@ function badge(value) {
   return `<span class="badge badge-${value.replaceAll(' ', '-').replaceAll('ã', 'a')}">${escapeHtml(value)}</span>`;
 }
 
+function preparation(item, { link = true } = {}) {
+  if (!item.preparacao) return '<span class="badge badge-prep-ausente">Ausente</span>';
+  const label = `Cobertura ${item.preparacao.cobertura}`;
+  const indicator = `<span class="badge badge-prep-${escapeHtml(item.preparacao.cobertura)}">${escapeHtml(label)}</span>`;
+  if (!link) return indicator;
+  const href = `/reader.html?path=${encodeURIComponent(item.preparacao.arquivo)}`;
+  return `<a class="preparation-link" data-preparation href="${href}">${indicator}<span>Abrir</span></a>`;
+}
+
 function filtered() {
   const query = $('#search').value.trim().toLowerCase();
   const status = $('#status').value;
@@ -38,14 +47,15 @@ function renderFilters() {
 function renderDetails(item) {
   if (!item) { $('#details').className = 'details empty'; $('#details').innerHTML = '<p>Selecione uma candidatura para ver a linha do tempo.</p>'; return; }
   $('#details').className = 'details';
-  $('#details').innerHTML = `<div class="section-heading"><div><p class="eyebrow">${escapeHtml(item.empresa)}</p><h2>${escapeHtml(item.cargo)}</h2></div>${badge(item.status)}</div><p><strong>Próxima ação:</strong> ${escapeHtml(item.proximaAcao || 'Não definida')}</p><div class="timeline">${item.etapas.map((step) => `<article class="timeline-item"><div class="timeline-dot"></div><div><p class="timeline-date">${escapeHtml(step.dataHorario || step.data)}</p><h3>${escapeHtml(step.nome)}</h3><p>${badge(step.situacao)} ${escapeHtml(step.resumo || '')}</p><p class="muted"><strong>Próxima ação:</strong> ${escapeHtml(step.proximaAcao || 'Não definida')}</p></div></article>`).join('')}</div>`;
+  $('#details').innerHTML = `<div class="section-heading"><div><p class="eyebrow">${escapeHtml(item.empresa)}</p><h2>${escapeHtml(item.cargo)}</h2></div>${badge(item.status)}</div><p><strong>Próxima ação:</strong> ${escapeHtml(item.proximaAcao || 'Não definida')}</p><div class="preparation-panel"><strong>Preparação:</strong> ${preparation(item)}</div><div class="timeline">${item.etapas.map((step) => `<article class="timeline-item"><div class="timeline-dot"></div><div><p class="timeline-date">${escapeHtml(step.dataHorario || step.data)}</p><h3>${escapeHtml(step.nome)}</h3><p>${badge(step.situacao)} ${escapeHtml(step.resumo || '')}</p><p class="muted"><strong>Próxima ação:</strong> ${escapeHtml(step.proximaAcao || 'Não definida')}</p></div></article>`).join('')}</div>`;
 }
 
 function renderRows() {
   const items = filtered();
   $('#count').textContent = `${items.length} processo${items.length === 1 ? '' : 's'}`;
-  $('#rows').innerHTML = items.length ? items.map((item) => `<tr data-folder="${escapeHtml(item.pasta)}" class="${state.selected === item.pasta ? 'selected' : ''}"><td><strong>${escapeHtml(item.empresa)}</strong></td><td>${escapeHtml(item.cargo)}</td><td>${badge(item.status)}</td><td>${escapeHtml(item.etapa)}</td><td>${escapeHtml(item.proximaAcao || 'Não definida')}</td><td>${escapeHtml(item.ultimaAtualizacao || '—')}</td></tr>`).join('') : '<tr><td colspan="6" class="empty-cell">Nenhuma candidatura encontrada.</td></tr>';
+  $('#rows').innerHTML = items.length ? items.map((item) => `<tr data-folder="${escapeHtml(item.pasta)}" class="${state.selected === item.pasta ? 'selected' : ''}"><td><strong>${escapeHtml(item.empresa)}</strong></td><td>${escapeHtml(item.cargo)}</td><td>${badge(item.status)}</td><td>${escapeHtml(item.etapa)}</td><td>${preparation(item)}</td><td>${escapeHtml(item.proximaAcao || 'Não definida')}</td><td>${escapeHtml(item.ultimaAtualizacao || '—')}</td></tr>`).join('') : '<tr><td colspan="7" class="empty-cell">Nenhuma candidatura encontrada.</td></tr>';
   document.querySelectorAll('tr[data-folder]').forEach((row) => row.addEventListener('click', () => { state.selected = row.dataset.folder; renderRows(); renderDetails(state.data.candidaturas.find((item) => item.pasta === state.selected)); }));
+  document.querySelectorAll('a[data-preparation]').forEach((link) => link.addEventListener('click', (event) => event.stopPropagation()));
 }
 
 async function load() {
@@ -61,4 +71,4 @@ $('#status').addEventListener('change', renderRows);
 $('#stage').addEventListener('change', renderRows);
 $('#clear').addEventListener('click', () => { $('#search').value = ''; $('#status').value = ''; $('#stage').value = ''; renderRows(); });
 $('#refresh').addEventListener('click', async () => { $('#refresh').disabled = true; try { await load(); } finally { $('#refresh').disabled = false; } });
-load().catch((error) => { $('#rows').innerHTML = `<tr><td colspan="6" class="empty-cell">${escapeHtml(error.message)}</td></tr>`; });
+load().catch((error) => { $('#rows').innerHTML = `<tr><td colspan="7" class="empty-cell">${escapeHtml(error.message)}</td></tr>`; });

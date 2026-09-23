@@ -24,6 +24,26 @@ _Avoid_: aplicacao, processo
 Avaliacao fundamentada da compatibilidade entre uma vaga e o perfil profissional.
 _Avoid_: fit, pontuacao de curriculo
 
+**Preparacao de etapa**:
+Material direcionado a uma etapa futura de uma candidatura, combinando requisitos da vaga, evidencias do perfil profissional e aprendizados de etapas anteriores.
+_Avoid_: preparacao generica, plano de candidatura
+
+**Cobertura limitada**:
+Condicao de uma preparacao de etapa produzida sem analise de match, que explicita as fontes ausentes e as perguntas ainda nao respondidas.
+_Avoid_: analise parcial, preparacao completa
+
+**Etapa provavel**:
+Tipo de entrevista escolhido para orientar uma preparacao antes de a organizacao confirmar a proxima etapa da candidatura.
+_Avoid_: etapa atual, etapa confirmada
+
+**Evidencia a confirmar**:
+Experiencia ou resultado mencionado durante a preparacao que ainda nao foi corroborado por uma fonte canonica do perfil profissional.
+_Avoid_: evidencia comprovada, fato confirmado
+
+**Entrevista simulada**:
+Ensaio opcional de uma etapa de entrevista que produz feedback e focos de pratica sem alterar o registro factual do processo seletivo.
+_Avoid_: entrevista real, avaliacao oficial
+
 **Documento adaptado**:
 Curriculo ou carta direcionado a uma candidatura sem alterar os fatos do perfil profissional.
 _Avoid_: curriculo-base, documento generico
