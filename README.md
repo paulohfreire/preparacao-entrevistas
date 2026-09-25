@@ -37,13 +37,15 @@ A análise de compatibilidade deve sempre ocorrer antes da adaptação dos docum
 .
 |-- .agents/
 |   `-- skills/
-|       |-- analisar-match-vaga/
 |       |-- adaptar-candidatura/
+|       |-- analisar-match-vaga/
 |       |-- atualizar-status-vaga/
+|       |-- comandos/
 |       `-- preparar-etapa/
 |-- candidaturas/               # conteúdo e painéis locais, ignorados pelo Git
 |-- dashboard/                  # front local do acompanhamento visual
 |-- scripts/dashboard/          # geração e validação dos dados do front
+|-- tests/                       # testes do dashboard e das skills
 |-- perfil/                      # dados profissionais locais, ignorados pelo Git
 |-- CONTEXT.md                   # vocabulário e limites do domínio
 |-- .gitignore
@@ -76,6 +78,18 @@ candidaturas/<empresa>-<cargo>/
     `-- carta.md
 ```
 
+## Skills e comandos disponíveis
+
+Digite `$comandos` no chat para consultar os recursos disponíveis neste workspace:
+
+```text
+$comandos
+```
+
+A resposta separa as skills, invocadas com `$`, dos comandos executados no terminal. Cada skill apresenta uma descrição curta e, quando disponível, um exemplo de solicitação. O catálogo é gerado dinamicamente a partir dos arquivos `SKILL.md`, dos metadados em `agents/openai.yaml` e dos scripts declarados no `package.json`; por isso, novas skills e novos comandos passam a aparecer sem a manutenção de uma segunda lista.
+
+Somente as skills pertencentes a este repositório são exibidas. Skills pessoais, globais ou fornecidas por plugins não fazem parte do catálogo do projeto.
+
 ## Configuração local
 
 Depois de clonar o repositório:
@@ -85,7 +99,22 @@ Depois de clonar o repositório:
 3. Quando necessário, mantenha informações complementares em `perfil/inventario-de-experiencias.md` e preferências em `perfil/preferencias-de-vagas.md`.
 4. Abra o repositório no Codex e solicite a análise de uma vaga ou a preparação para uma entrevista.
 
-As skills locais em `.agents/skills/` são descobertas pelo Codex de acordo com a solicitação correspondente.
+As skills locais em `.agents/skills/` são descobertas pelo Codex de acordo com a solicitação correspondente. A invocação explícita usa o formato `$nome-da-skill`.
+
+## Validação local
+
+Para executar todos os testes automatizados:
+
+```powershell
+npm run check
+```
+
+Também é possível executar apenas um grupo:
+
+```powershell
+npm run dashboard:check
+npm run skills:check
+```
 
 ## Privacidade e integridade
 
@@ -101,18 +130,22 @@ As skills seguem estas regras:
 
 ## Skills
 
-### `analisar-match-vaga`
+### `$comandos`
+
+Lista automaticamente as skills locais com uma descrição curta e um exemplo de uso, além dos comandos `npm` do projeto. O catálogo é gerado a partir dos arquivos do próprio workspace e não inclui skills pessoais, globais ou fornecidas por plugins.
+
+### `$analisar-match-vaga`
 
 Classifica os requisitos da vaga, associa evidências do perfil, estima a compatibilidade e registra riscos, lacunas e uma recomendação fundamentada. Não edita currículos nem cartas de apresentação.
 
-### `adaptar-candidatura`
+### `$adaptar-candidatura`
 
 Produz um currículo e uma carta de apresentação direcionados depois que a compatibilidade é analisada. Pode reorganizar e aprimorar a redação das evidências, mas não ampliar o que realmente aconteceu.
 
-### `atualizar-status-vaga`
+### `$atualizar-status-vaga`
 
 Registra etapas agendadas e concluídas, feedbacks, próximas ações e mudanças no processo seletivo. Mantém o histórico detalhado da candidatura e os painéis Markdown/JSON, propõe uma avaliação de 1 a 5 para etapas avaliativas e solicita confirmação antes de registrá-la. Não altera `vaga.md`, não realiza a análise inicial de compatibilidade e não cria lembretes sem autorização explícita.
 
-### `preparar-etapa`
+### `$preparar-etapa`
 
 Cria uma preparação persistente e específica para uma etapa, relacionando requisitos da vaga a evidências reais do perfil. Oferece modos rápido, padrão e aprofundado, pode conduzir entrevistas simuladas e registra avaliações por dimensão. Lê o histórico do processo, mas deixa qualquer alteração de status para `atualizar-status-vaga`.

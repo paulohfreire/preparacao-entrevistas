@@ -1,4 +1,4 @@
 interface:
   display_name: "Preparar etapa"
-  short_description: "Prepare entrevistas e simulações por etapa"
-  default_prompt: "Use $preparar-etapa para preparar minha próxima entrevista desta candidatura."
+  short_description: "Prepare entrevistas e simulaÃ§Ãµes por etapa"
+  default_prompt: "Use $preparar-etapa para preparar minha prÃ³xima entrevista desta candidatura."

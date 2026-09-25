@@ -5,6 +5,15 @@
   "scripts": {
     "dashboard:data": "node scripts/dashboard/build-data.mjs",
     "dashboard": "node scripts/dashboard/server.mjs",
-    "dashboard:check": "node --test tests/dashboard/*.test.mjs"
+    "dashboard:check": "node --test tests/dashboard/*.test.mjs",
+    "skills:check": "node --test tests/skills/*.test.mjs",
+    "check": "node --test"
+  },
+  "commandDescriptions": {
+    "check": "Executa todos os testes automatizados do projeto.",
+    "dashboard": "Regenera os dados e abre o dashboard local.",
+    "dashboard:check": "Executa os testes automatizados do dashboard.",
+    "dashboard:data": "Regenera os dados consumidos pelo dashboard.",
+    "skills:check": "Executa os testes automatizados das skills."
   }
 }

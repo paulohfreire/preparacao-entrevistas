@@ -1,0 +1,7 @@
+interface:
+  display_name: "Comandos do workspace"
+  short_description: "Liste skills e comandos disponíveis no projeto"
+  default_prompt: "Use $comandos para listar as skills e os comandos disponíveis neste workspace."
+
+policy:
+  allow_implicit_invocation: false

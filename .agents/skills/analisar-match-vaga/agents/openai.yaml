@@ -1,4 +1,4 @@
 interface:
   display_name: "Analisar match de vaga"
-  short_description: "Compare uma vaga com o curriculo-base"
-  default_prompt: "Analise o match desta vaga com meu curriculo-base."
+  short_description: "Compare uma vaga com o currículo-base"
+  default_prompt: "Use $analisar-match-vaga para analisar o match desta vaga com meu currículo-base."
