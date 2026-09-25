@@ -37,13 +37,15 @@ The compatibility assessment must always take place before the documents are tai
 .
 |-- .agents/
 |   `-- skills/
-|       |-- analisar-match-vaga/
 |       |-- adaptar-candidatura/
+|       |-- analisar-match-vaga/
 |       |-- atualizar-status-vaga/
+|       |-- comandos/
 |       `-- preparar-etapa/
 |-- candidaturas/               # local content and dashboards, ignored by Git
 |-- dashboard/                  # local visual tracking front end
 |-- scripts/dashboard/          # front-end data generation and validation
+|-- tests/                       # dashboard and skill tests
 |-- perfil/                      # local professional data, ignored by Git
 |-- CONTEXT.md                   # domain vocabulary and boundaries
 |-- .gitignore
@@ -76,6 +78,18 @@ candidaturas/<company>-<role>/
     `-- carta.md
 ```
 
+## Available skills and commands
+
+Type `$comandos` in chat to see the resources available in this workspace:
+
+```text
+$comandos
+```
+
+The response separates skills, invoked with `$`, from commands executed in the terminal. Each skill includes a short description and, when available, an example request. The catalog is generated dynamically from `SKILL.md` files, metadata under `agents/openai.yaml`, and scripts declared in `package.json`, so newly added skills and commands appear without maintaining a second list.
+
+Only skills that belong to this repository are displayed. Personal, global, and plugin-provided skills are outside the project catalog.
+
 ## Local setup
 
 After cloning the repository:
@@ -85,7 +99,22 @@ After cloning the repository:
 3. When needed, keep supporting information in `perfil/inventario-de-experiencias.md` and job preferences in `perfil/preferencias-de-vagas.md`.
 4. Open the repository in Codex and request a job assessment or interview preparation.
 
-Codex discovers the local skills under `.agents/skills/` when a request matches their purpose.
+Codex discovers the local skills under `.agents/skills/` when a request matches their purpose. Explicit invocation uses the `$skill-name` format.
+
+## Local validation
+
+To run all automated tests:
+
+```powershell
+npm run check
+```
+
+You can also run a specific group:
+
+```powershell
+npm run dashboard:check
+npm run skills:check
+```
 
 ## Privacy and integrity
 
@@ -101,18 +130,22 @@ The skills follow these rules:
 
 ## Skills
 
-### `analisar-match-vaga`
+### `$comandos`
+
+Automatically lists local skills with a short description and usage example, followed by the project's `npm` commands. The catalog is generated from workspace files and excludes personal, global, and plugin-provided skills.
+
+### `$analisar-match-vaga`
 
 Classifies job requirements, maps them to evidence from the professional profile, estimates compatibility, and records risks, gaps, and a supported recommendation. It does not edit résumés or cover letters.
 
-### `adaptar-candidatura`
+### `$adaptar-candidatura`
 
 Produces a tailored résumé and cover letter after compatibility has been assessed. It may reorganize and improve the wording of the evidence, but it must not exaggerate what actually happened.
 
-### `atualizar-status-vaga`
+### `$atualizar-status-vaga`
 
 Records scheduled and completed stages, feedback, next actions, and selection-process status changes. It maintains the application's detailed history and Markdown/JSON dashboards, proposes a 1-to-5 assessment for evaluative stages, and requests confirmation before recording it. It does not modify `vaga.md`, perform the initial compatibility assessment, or create reminders without explicit authorization.
 
-### `preparar-etapa`
+### `$preparar-etapa`
 
 Creates persistent, stage-specific preparation by mapping job requirements to verified evidence from the professional profile. It offers quick, standard, and in-depth modes, can run mock interviews, and records assessments by dimension. It reads the process history but leaves status changes to `atualizar-status-vaga`.
